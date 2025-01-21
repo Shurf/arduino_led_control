@@ -1,4 +1,24 @@
 #include "HttpControl.h"
+#include <esp_wifi.h>
+
+void HttpControl::readMacAddress(){
+    uint8_t baseMac[6];
+    char macAddressCharArray[128];
+    esp_err_t ret = esp_wifi_get_mac(WIFI_IF_STA, baseMac);
+    if (ret == ESP_OK) {
+        sprintf(macAddressCharArray, "%02x:%02x:%02x:%02x:%02x:%02x",
+                    baseMac[0], baseMac[1], baseMac[2],
+                    baseMac[3], baseMac[4], baseMac[5]);
+        baseMacString = macAddressCharArray;
+    } else {
+        Serial.println("Failed to read MAC address");
+    }
+}
+
+HttpControl::HttpControl()
+{
+    readMacAddress();
+}
 
 Arguments HttpControl::getLedProfileFullParameters()
 {
@@ -6,12 +26,24 @@ Arguments HttpControl::getLedProfileFullParameters()
     String serverResponse;
     JsonDocument doc;
     Arguments result;
+    int triesCount = 0;
 
-    http.begin(getCurrentLedProfileUrl);
+    http.begin(getCurrentLedProfileUrl + "?mac_address=" + baseMacString);
 
-    if(http.GET() != 200)
+    while(triesCount < MAX_TRIES_COUNT)
     {
+        if(http.GET() == 200)
+            break;
         Serial.println("HTTP Error");
+        delay(SLEEP_INTERVAL);
+
+        triesCount++;
+    }
+
+    if(triesCount == MAX_TRIES_COUNT)
+    {
+        memset(&result, 0, sizeof(result));
+        http.end();
         return result;
     }
 
@@ -31,6 +63,8 @@ Arguments HttpControl::getLedProfileFullParameters()
     result.secondaryRed2 = (int)doc["secondary_red2"];
     result.secondaryGreen2 = (int)doc["secondary_green2"];
     result.secondaryBlue2 = (int)doc["secondary_blue2"];
+
+    http.end();
 
     return result;
 }
