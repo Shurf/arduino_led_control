@@ -53,7 +53,7 @@ Arguments HttpControl::getLedProfileFullParameters()
     result.profileName = ((const char*)doc["profile_name"]);
     result.percentage = (int)doc["percentage"];
     result.enabled = (bool)doc["enabled"];
-    result.useSecondary = (bool)doc["use_secondary"];
+    result.useSecondary = result.enabled && (bool)doc["use_secondary"];
     result.red = (int)doc["red"];
     result.green = (int)doc["green"];
     result.blue = (int)doc["blue"];    
