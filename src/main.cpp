@@ -9,15 +9,6 @@
 #include "NeoPixelLed.h"
 #include "secrets.h"
 
-
-//#define NEOPIXEL_LED_COUNT 16
-
-// cross
-#define NEOPIXEL_LED_COUNT 357
-
-// ankh
-//#define NEOPIXEL_LED_COUNT 298
-
 // sound strip
 // #define NEOPIXEL_LED_COUNT 88
 
@@ -31,7 +22,9 @@
 // NeoPixelLed * neoPixelLed = new NeoPixelLed(357, 255, NEOPIXEL_LED_PIN, false); // cross 
 // NeoPixelLed * neoPixelLed = new NeoPixelLed(298, 255, NEOPIXEL_LED_PIN, true); // ankh 
 // NeoPixelLed * neoPixelLed = new NeoPixelLed(24, 8, NEOPIXEL_LED_PIN, false); // circle
-NeoPixelLed * neoPixelLed = new NeoPixelLed(20, 255, NEOPIXEL_LED_PIN, false); // rabbit
+// NeoPixelLed * neoPixelLed = new NeoPixelLed(20, 255, NEOPIXEL_LED_PIN, false); // rabbit
+
+NeoPixelLed * neoPixelLed = new NeoPixelLed(60, 8, NEOPIXEL_LED_PIN, false); // test
 
 #define INTERVAL_MILLIS 1000
 

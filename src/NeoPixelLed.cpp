@@ -25,6 +25,14 @@ int NeoPixelLed::getMaxSecondarySymmetricLedIndex(int percentage)
 
 void NeoPixelLed::display(Arguments & arguments)
 {
+    if(!arguments.enabled)
+    {
+        for(int i = 0; i < ledCount; i++)
+            rgbWS->setPixelColor(i, 0, 0, 0);
+        rgbWS->show();
+        return;
+    }
+
     if(arguments.useSecondary)
         displaySecondaryAnimation(arguments);
     else if(useSymmetric)
@@ -36,10 +44,7 @@ void NeoPixelLed::display(Arguments & arguments)
 }
 
 void NeoPixelLed::displaySecondaryAnimation(Arguments & arguments)
-{
-    int currentSectorPercentEnd = 100;
-    int currentSectorCycles = 0;
-
+{  
     int sectorEnd = getLedIndex(currentSectorPercentEnd);
     int sectorStart = getLedIndex(currentSectorPercentEnd - CURRENT_SECTOR_PERCENT_LENGTH);
     if(sectorStart < 0)

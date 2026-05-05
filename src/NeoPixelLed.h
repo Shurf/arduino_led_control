@@ -24,4 +24,7 @@ private:
     int brightness;
     bool useSymmetric;
     Adafruit_NeoPixel* rgbWS;
+
+    int currentSectorPercentEnd = 100;
+    int currentSectorCycles = 0;
 };
